@@ -16,6 +16,7 @@
 		0217ED022C45893600912DED /* Fetch_Coding_ChallengeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0217ED012C45893600912DED /* Fetch_Coding_ChallengeUITestsLaunchTests.swift */; };
 		0217ED0F2C458CC800912DED /* MealStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0217ED0E2C458CC800912DED /* MealStructs.swift */; };
 		0217ED152C45999D00912DED /* RecipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0217ED142C45999D00912DED /* RecipeView.swift */; };
+		0217ED172C45A59B00912DED /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0217ED162C45A59B00912DED /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		0217ED012C45893600912DED /* Fetch_Coding_ChallengeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetch_Coding_ChallengeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0217ED0E2C458CC800912DED /* MealStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealStructs.swift; sourceTree = "<group>"; };
 		0217ED142C45999D00912DED /* RecipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeView.swift; sourceTree = "<group>"; };
+		0217ED162C45A59B00912DED /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 		0217ECD72C45893400912DED = {
 			isa = PBXGroup;
 			children = (
+				0217ED162C45A59B00912DED /* README.md */,
 				0217ECE22C45893400912DED /* Fetch Coding Challenge */,
 				0217ECF42C45893600912DED /* Fetch Coding ChallengeTests */,
 				0217ECFE2C45893600912DED /* Fetch Coding ChallengeUITests */,
@@ -239,6 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0217ED172C45A59B00912DED /* README.md in Resources */,
 				0217ECEC2C45893600912DED /* Preview Assets.xcassets in Resources */,
 				0217ECE82C45893600912DED /* Assets.xcassets in Resources */,
 			);
