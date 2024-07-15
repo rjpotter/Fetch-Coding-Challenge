@@ -7,18 +7,49 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct ContentView: View, Sendable {
+    @State private var meals: [Meal] = []
+    @State private var errorMessage: String?
+    let dessertURL = URL(string: "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert")
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            List(meals) { meal in
+                NavigationLink(destination: Text(meal.name)) {
+                    HStack {
+                        AsyncImage(url: URL(string: meal.thumbnail)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+                        Text(meal.name)
+                    }
+                }
+            }
+            .navigationTitle("Desserts")
         }
-        .padding()
+        .onAppear {
+            Task {
+                await fetchMeals()
+            }
+        }
+    }
+        
+    private func fetchMeals() async {
+        do {
+            let fetchedMeals = try await MealAPI.fetchDessertMeals()
+            meals = fetchedMeals.sorted { $0.name < $1.name }
+        } catch {
+            errorMessage = error.localizedDescription
+            print("Error fetching meals: \(errorMessage!)")
+        }
     }
 }
+
 
 #Preview {
     ContentView()
 }
+
