@@ -10,12 +10,11 @@ import SwiftUI
 struct ContentView: View, Sendable {
     @State private var meals: [Meal] = []
     @State private var errorMessage: String?
-    let dessertURL = URL(string: "https://themealdb.com/api/json/v1/1/filter.php?c=Dessert")
     
     var body: some View {
         NavigationView {
             List(meals) { meal in
-                NavigationLink(destination: Text(meal.name)) {
+                NavigationLink(destination: RecipeView(mealId: meal.id)) {
                     HStack {
                         AsyncImage(url: URL(string: meal.thumbnail)) { image in
                             image.resizable()
