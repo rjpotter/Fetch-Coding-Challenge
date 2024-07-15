@@ -13,36 +13,78 @@ struct RecipeView: View {
     @State private var errorMessage: String?
 
     var body: some View {
-        VStack {
-            if let mealDetail = mealDetail {
-                Text(mealDetail.name)
-                    .font(.largeTitle)
-                    .padding()
-                Text(mealDetail.instructions)
-                    .padding()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                if let mealDetail = mealDetail {
+                    AsyncImage(url: URL(string: mealDetail.thumbnail)) { image in
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(10)
+                            .padding()
+                    } placeholder: {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
 
-                List {
-                    ForEach(mealDetail.ingredients.sorted(by: >), id: \.key) { key, value in
-                        HStack {
-                            Text(key)
-                            Spacer()
-                            Text(value)
+                    Text(mealDetail.name)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Divider()
+                        .padding(.horizontal)
+
+                    Text("Ingredients")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal)
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(mealDetail.ingredients.sorted(by: >), id: \.key) { key, value in
+                            HStack {
+                                Text(key)
+                                    .fontWeight(.medium)
+                                Spacer()
+                                Text(value)
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.horizontal)
                         }
                     }
+
+                    Divider()
+                        .padding(.horizontal)
+
+                    Text("Instructions")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal)
+
+                    Text(mealDetail.instructions)
+                        .padding([.horizontal, .bottom])
+                } else if let errorMessage = errorMessage {
+                    Text("Error: \(errorMessage)")
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    ProgressView("Loading Meal Details...")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                        .onAppear {
+                            Task {
+                                await fetchMealDetail()
+                            }
+                        }
                 }
-            } else if let errorMessage = errorMessage {
-                Text("Error: \(errorMessage)")
-                    .foregroundColor(.red)
-            } else {
-                ProgressView()
-                    .onAppear {
-                        Task {
-                            await fetchMealDetail()
-                        }
-                    }
             }
+            .padding(.top)
         }
-        .navigationTitle("Meal Details")
+        .navigationTitle("Recipe Details")
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func fetchMealDetail() async {

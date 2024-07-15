@@ -13,29 +13,47 @@ struct ContentView: View, Sendable {
     
     var body: some View {
         NavigationView {
-            List(meals) { meal in
-                NavigationLink(destination: RecipeView(mealId: meal.id)) {
-                    HStack {
-                        AsyncImage(url: URL(string: meal.thumbnail)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
+            VStack {
+                if let errorMessage = errorMessage {
+                    Text("Error: \(errorMessage)")
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else if meals.isEmpty {
+                    ProgressView("Loading Desserts...")
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                        .onAppear {
+                            Task {
+                                await fetchMeals()
+                            }
                         }
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-                        Text(meal.name)
+                } else {
+                    List(meals) { meal in
+                        NavigationLink(destination: RecipeView(mealId: meal.id)) {
+                            HStack {
+                                AsyncImage(url: URL(string: meal.thumbnail)) { image in
+                                    image.resizable()
+                                        .scaledToFill()
+                                        .frame(width: 50, height: 50)
+                                        .clipShape(Circle())
+                                } placeholder: {
+                                    ProgressView()
+                                        .frame(width: 50, height: 50)
+                                }
+                                Text(meal.name)
+                                    .font(.headline)
+                                    .padding(.leading, 10)
+                            }
+                            .padding(.vertical, 5)
+                        }
                     }
+                    .navigationTitle("Desserts")
                 }
-            }
-            .navigationTitle("Desserts")
-        }
-        .onAppear {
-            Task {
-                await fetchMeals()
             }
         }
     }
-        
+
     private func fetchMeals() async {
         do {
             let fetchedMeals = try await MealAPI.fetchDessertMeals()
